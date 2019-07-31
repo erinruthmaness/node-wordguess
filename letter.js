@@ -1,23 +1,31 @@
+var allGuesses = [];
 function Letter(x) {
-    this.name = x
+    this.name = x.toUpperCase()
 }
 
 Letter.prototype.displayLetter = function () {
-    if (this.isGuessed) {
-        console.log("display letter: " + this.name + " was guessed! " + this.isGuessed)
-        return this.name;
+    if (this.checkGuess(allGuesses)) {
+        return (this.name + " ");
     }
     else {
-        console.log("display letter: " + this.name + " was not guessed " + this.isGuessed)
         return "_ ";
     }
 }
 
 Letter.prototype.checkGuess = function (guess) {
-    if (guess === this.name) {
-        Letter.isGuessed = true;
-        console.log(Letter.isGuessed);
+    allGuesses.push(guess);
+    for (i = 0; i < guess.length; i++) {
+        if (guess[i] === this.name) {
+            return true;
+        }
     }
 }
 
-module.exports = Letter
+var clearGuesses = function (guessArr) {
+    allGuesses = guessArr;
+}
+
+module.exports = {
+    Letter,
+    clearGuesses
+}
