@@ -1,11 +1,24 @@
 var inquirer = require("inquirer");
 var getWord = require("./word.js");
+var fs = require("fs")
 
-var currentword = "hello";
-var guessMe = new getWord.Word(currentword);
+var wordBank = [];
+var currentword = "";
+var guessMe = "";
 var allGuesses = [];
+var i = 10;
 
-var i = 5;
+fs.readFile("wordbank.txt", "utf8", function (error, data) {
+    if (error) {
+        console.log("Error: could not read from work bank. Details: " + error);
+    }
+    else {
+        wordBank = data.split(", ")
+        currentword = wordBank[Math.floor(Math.random() * wordBank.length)];
+        guessMe = new getWord.Word(currentword);
+        gameGuess();
+    }
+})
 
 function gameGuess() {
     console.log(i + " wrong guesses left!");
@@ -77,10 +90,10 @@ function playAgain() {
 }
 
 function resetGame() {
-    //var currentword = new Word("something")
+    currentword = wordBank[Math.floor(Math.random() * wordBank.length)];
+    guessMe = new getWord.Word(currentword);
     allGuesses = [];
     getWord.clearWord(allGuesses);
 
 }
 
-gameGuess();
